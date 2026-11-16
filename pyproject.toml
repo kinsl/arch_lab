@@ -1,0 +1,135 @@
+[project]
+name = "arch-lab-13"
+version = "0.1.0"
+requires-python = ">=3.13,<3.14"
+dependencies = []
+[dependency-groups]
+dev = [
+  "ruff==0.17.*",
+  "mypy==2.4.*",
+  "pre-commit==4.7.*",
+  "user-service==0.1.0",
+  "order-service==0.1.0",
+  "notification-service==0.1.0",
+]
+
+[tool.uv.sources]
+user-service = { path = "services/user-service", editable = true }
+order-service = { path = "services/order-service", editable = true }
+notification-service = { path = "services/notification-service", editable = true }
+
+[tool.uv.workspace]
+exclude = ["services/*"]
+
+[tool.ruff]
+# Ruff config: https://docs.astral.sh/ruff/settings
+src = ["services/user-service/src", "services/order-service/src", "services/notification-service/src"]
+preview = true
+fix = true
+target-version = "py313"
+line-length = 120
+
+[tool.ruff.format]
+quote-style = "double"
+# This is only required because we have invalid on-purpose code in docstrings:
+docstring-code-format = false
+
+[tool.ruff.lint]
+select = [
+  "A",     # flake8-builtins
+  "ASYNC", # flake8-async
+  "B",     # flake8-bugbear
+  "C4",    # flake8-comprehensions
+  "C90",   # mccabe
+  "COM",   # flake8-commas
+  "D",     # pydocstyle
+  "DTZ",   # flake8-datetimez
+  "DJ",    # flake8-django
+  "E",     # pycodestyle
+  "ERA",   # flake8-eradicate
+  "EXE",   # flake8-executable
+  "F",     # pyflakes
+  "FBT",   # flake8-boolean-trap
+  "FLY",   # pyflint
+  "FURB",  # refurb
+  "G",     # flake8-logging-format
+  "I",     # isort
+  "ICN",   # flake8-import-conventions
+  "INT",   # flake8-gettext
+  "ISC",   # flake8-implicit-str-concat
+  "LOG",   # flake8-logging
+  "N",     # pep8-naming
+  "PERF",  # perflint
+  "PIE",   # flake8-pie
+  "PL",    # pylint
+  "PTH",   # flake8-use-pathlib
+  "Q",     # flake8-quotes
+  "RET",   # flake8-return
+  "RSE",   # flake8-raise
+  "RUF",   # ruff
+  "S",     # flake8-bandit
+  "SIM",   # flake8-simplify
+  "SLF",   # flake8-self
+  "SLOT",  # flake8-slots
+  "debugger", # flake8-debugger
+  "TID",   # flake8-tidy-imports
+  "TRY",   # tryceratops
+  "UP",    # pyupgrade
+  "W",     # pycodestyle
+  "YTT",   # flake8-2020
+]
+ignore = [
+  "ambiguous-unicode-character-string",
+  "ambiguous-unicode-character-docstring",
+  "ambiguous-unicode-character-comment",
+  "none-not-at-end-of-union",
+  "stdlib-module-shadowing",               # allow to shadow stdlib and builtin module names
+  "missing-trailing-comma",                # trailing comma, conflicts with `ruff format`
+  # Different doc rules that we don't really care about:
+  "undocumented-public-module",
+  "undocumented-public-class",
+  "undocumented-public-method",
+  "undocumented-public-function",
+  "undocumented-public-package",
+  "undocumented-magic-method",
+  "undocumented-public-nested-class",
+  "undocumented-public-init",
+  "incorrect-blank-line-before-class",
+  "multi-line-summary-first-line",
+  "non-imperative-mood",
+  "docstring-starts-with-this",
+  "non-capitalized-section-name",
+  "single-line-implicit-string-concatenation", # implicit string concat conflicts with `ruff format`
+  "explicit-string-concatenation",             # prefer explicit string concat over implicit concat
+  "PLR09",                                     # we have our own complexity rules
+  "magic-value-comparison",                    # do not report magic numbers
+  "no-self-use",                               # do not require classmethod / staticmethod when self not used
+  "raise-vanilla-args",                        # long exception messages from `tryceratops`
+]
+external = ["WPS"]
+
+[tool.mypy]
+mypy_path = ["services/user-service/src", "services/order-service/src", "services/notification-service/src"]
+files = ["services/user-service/src", "services/order-service/src", "services/notification-service/src"]
+python_version = "3.13"
+warn_unreachable = true
+enable_error_code = [
+  "deprecated",
+  "exhaustive-match",
+  "explicit-override",
+  "ignore-without-code",
+  "possibly-undefined",
+  "redundant-expr",
+  "redundant-self",
+  "truthy-bool",
+  "truthy-iterable",
+  "unimported-reveal",
+  "unused-awaitable",
+]
+extra_checks = true
+strict_equality_for_none = true
+strict = true
+plugins = [
+  "pydantic.mypy",
+]
+

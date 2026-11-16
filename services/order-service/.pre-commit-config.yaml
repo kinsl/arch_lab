@@ -1,0 +1,18 @@
+files: ^services/order-service/
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.3
+    hooks:
+      - id: ruff-check
+        args: ["--config=services/order-service/pyproject.toml", "--exit-non-zero-on-fix"]
+      - id: ruff-format
+        args: ["--config=services/order-service/pyproject.toml"]
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (strict)
+        entry: uv run --directory services/order-service --locked mypy --config-file pyproject.toml
+        language: system
+        pass_filenames: false
+        types: [python]
